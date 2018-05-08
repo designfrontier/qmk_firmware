@@ -34,6 +34,8 @@ extern keymap_config_t keymap_config;
 #define _DVORAK 2
 #define _LOWER 3
 #define _RAISE 4
+#define _ARROWS 5
+#define _TENKEY 6
 #define _ADJUST 16
 
 enum custom_keycodes {
@@ -43,8 +45,8 @@ enum custom_keycodes {
   LOWER,
   RAISE,
   ADJUST,
-  _ARROWS,
-  _TENKEY
+  ARROWS,
+  TENKEY
 };
 
 // Fillers to make layering more clear
@@ -99,7 +101,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_TENKEY] = KEYMAP( \
     _______, _______, _______, _______, _______, _______,                                                                     _______, _______, KC_7,    KC_8,    KC_9,    KC_MINS, \
-    _______, _______, _______, _______, _______, _______,             _______, _______,          _______, KC_DOT,             _______, _______, KC_4,    KC_5,    KC_6,    KC_ASTR \
+    _______, _______, _______, _______, _______, _______,             _______, _______,          _______, KC_DOT,             _______, _______, KC_4,    KC_5,    KC_6,    KC_ASTR, \
     _______, _______, _______, _______, _______, _______,    _______, _______, _______,          _______, KC_ENT,  KC_0,      _______, _______, KC_1,    KC_2,    KC_3,    KC_PLUS \
   ),
 
