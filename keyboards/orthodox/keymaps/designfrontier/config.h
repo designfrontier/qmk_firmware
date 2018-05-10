@@ -26,13 +26,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Use I2C or Serial, not both */
 
-#define USE_SERIAL
-// #define USE_I2C
+#undef USE_SERIAL
+#define USE_I2C
 
 /* Select hand configuration */
 
-// #define MASTER_LEFT
+#define MASTER_LEFT
 // #define MASTER_RIGHT
-#define EE_HANDS
+// #define EE_HANDS
+
+#define QMK_KEYS_PER_SCAN 4
 
 #endif
