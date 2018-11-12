@@ -21,17 +21,16 @@ enum planck_layers {
   _DVORAK,
   _LOWER,
   _RAISE,
-  _PLOVER,
   _ADJUST,
   _ARROWS,
-  _TENKEY
+  _TENKEY,
+  _EMOJI
 };
 
 enum planck_keycodes {
   QWERTY = SAFE_RANGE,
   COLEMAK,
   DVORAK,
-  PLOVER,
   LOWER,
   RAISE,
   BACKLIT,
@@ -42,6 +41,106 @@ enum planck_keycodes {
 // Fillers to make layering more clear
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
+
+enum unicode_name {
+  GRIN, // grinning face 😊
+  TJOY, // tears of joy 😂
+  SMILE, // grining face with smiling eyes 😁
+  HEART, // heart ❤
+  EYERT, // smiling face with heart shaped eyes 😍
+  CRY, // crying face 😭
+  SMEYE, // smiling face with smiling eyes 😊
+  UNAMU, // unamused 😒
+  KISS, // kiss 😘
+  HART2, // two hearts 💕
+  WEARY, // weary 😩
+  OKHND, // ok hand sign 👌
+  PENSV, // pensive 😔
+  SMIRK, // smirk 😏
+  RECYC, // recycle ♻
+  WINK, // wink 😉
+  THMUP, // thumb up 👍
+  THMDN, // thumb down 👎
+  PRAY, // pray 🙏
+  PHEW, // relieved 😌
+  MUSIC, // musical notes
+  FLUSH, // flushed 😳
+  CELEB, // celebration 🙌
+  CRY2, // crying face 😢
+  COOL, // smile with sunglasses 😎
+  NOEVS, // see no evil
+  NOEVH, // hear no evil
+  NOEVK, // speak no evil
+  POO, // pile of poo
+  EYES, // eyes
+  VIC, // victory hand
+  BHART, // broken heart
+  SLEEP, // sleeping face
+  SMIL2, // smiling face with open mouth & sweat
+  HUNRD, // 100
+  CONFU, // confused
+  TONGU, // face with tongue & winking eye
+  DISAP, // disappointed
+  YUMMY, // face savoring delicious food
+  CLAP, // hand clapping
+  FEAR, // face screaming in fear
+  HORNS, // smiling face with horns
+  HALO, // smiling face with halo
+  BYE, // waving hand
+  SUN, // sun
+  MOON, // moon
+  SKULL // skull
+};
+
+const uint32_t PROGMEM unicode_map[] = {
+  [GRIN] = 0x1F600,
+  [TJOY] = 0x1F602,
+  [SMILE] = 0x1F601,
+  [HEART] = 0x2764,
+  [EYERT] = 0x1f60d,
+  [CRY] = 0x1f62d,
+  [SMEYE] = 0x1F60A,
+  [UNAMU] = 0x1F612,
+  [KISS] = 0x1F618,
+  [HART2] = 0x1F495,
+  [WEARY] = 0x1F629,
+  [OKHND] = 0x1F44C,
+  [PENSV] = 0x1F614,
+  [SMIRK] = 0x1F60F,
+  [RECYC] = 0x267B,
+  [WINK] = 0x1F609,
+  [THMUP] = 0x1F44D,
+  [THMDN] = 0x1F44E,
+  [PRAY] = 0x1F64F,
+  [PHEW] = 0x1F60C,
+  [MUSIC] = 0x1F3B6,
+  [FLUSH] = 0x1F633,
+  [CELEB] = 0x1F64C,
+  [CRY2] = 0x1F622,
+  [COOL] = 0x1F60E,
+  [NOEVS] = 0x1F648,
+  [NOEVH] = 0x1F649,
+  [NOEVK] = 0x1F64A,
+  [POO] = 0x1F4A9,
+  [EYES] = 0x1F440,
+  [VIC] = 0x270C,
+  [BHART] = 0x1F494,
+  [SLEEP] = 0x1F634,
+  [SMIL2] = 0x1F605,
+  [HUNRD] = 0x1F4AF,
+  [CONFU] = 0x1F615,
+  [TONGU] = 0x1F61C,
+  [DISAP] = 0x1F61E,
+  [YUMMY] = 0x1F60B,
+  [CLAP] = 0x1F44F,
+  [FEAR] = 0x1F631,
+  [HORNS] = 0x1F608,
+  [HALO] = 0x1F607,
+  [BYE] = 0x1F44B,
+  [SUN] = 0x2600,
+  [MOON] = 0x1F314,
+  [SKULL] = 0x1F480
+ };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -71,7 +170,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |   1  |   2  |   3  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      |   0  |   0  |   .  |Enter |
+ * |      |      |      |      |EMOJI |             |      |   0  |   0  |   .  |Enter |
  * `-----------------------------------------------------------------------------------'
  */
 
@@ -79,7 +178,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   { KC_DEL, _______, _______, _______, _______, _______, _______, _______,    KC_7,    KC_8,    KC_9, KC_MINS},
   {KC_BSPC, _______, _______, _______, _______, _______, _______, _______,    KC_4,    KC_5,    KC_6, KC_ASTR},
   {_______, _______, _______, _______, _______, _______, _______, _______,    KC_1,    KC_2,    KC_3, KC_PLUS},
-  {KC_TRNS, _______, _______, _______, _______, _______, _______, _______,    KC_0,    KC_0,  KC_DOT,  KC_ENT}
+  {KC_TRNS, _______, _______, _______, LT(_EMOJI, KC_E), _______, _______, _______,    KC_0,    KC_0,  KC_DOT,  KC_ENT}
 },
 
 /* Qwerty
@@ -172,30 +271,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {BACKLIT, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY}
 },
 
-/* Plover layer (http://opensteno.org)
+/* Emoji
  * ,-----------------------------------------------------------------------------------.
- * |   #  |   #  |   #  |   #  |   #  |   #  |   #  |   #  |   #  |   #  |   #  |   #  |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |   S  |   T  |   P  |   H  |   *  |   *  |   F  |   P  |   L  |   T  |   D  |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |   S  |   K  |   W  |   R  |   *  |   *  |   R  |   B  |   G  |   S  |   Z  |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Exit |      |      |   A  |   O  |             |   E  |   U  |      |      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-
-[_PLOVER] = {
-  {KC_1,    KC_1,    KC_1,    KC_1,    KC_1,    KC_1,    KC_1,    KC_1,    KC_1,    KC_1,    KC_1,    KC_1   },
-  {XXXXXXX, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC},
-  {XXXXXXX, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT},
-  {EXT_PLV, XXXXXXX, XXXXXXX, KC_C,    KC_V,    XXXXXXX, XXXXXXX, KC_N,    KC_M,    XXXXXXX, XXXXXXX, XXXXXXX}
+[_EMOJI] = {
+  {X(HART2), X(CRY2) , X(WEARY), X(EYERT),X(SMIRK),  X(TJOY), X(RECYC), X(UNAMU),X(MUSIC),X(OKHND),X(PENSV), X(PHEW)},
+  {X(THMUP), X(PRAY) , X(SMILE), X(SMIL2),X(FLUSH),  X(GRIN), X(HEART),   X(BYE), X(KISS),X(CELEB), X(COOL),X(NOEVS)},
+  {X(THMDN), X(SLEEP),  X(CLAP),   X(CRY),  X(VIC), X(BHART),   X(SUN), X(SMEYE), X(WINK), X(MOON),X(CONFU),X(NOEVH)},
+  {________,   X(POO),  X(EYES), X(HUNRD), _______, X(SKULL), X(HORNS), ________, X(HALO), X(FEAR),X(YUMMY),X(NOEVK)}
 },
 
 /* Adjust (Lower + Raise)
  * ,-----------------------------------------------------------------------------------.
  * |      | Reset|      |      |      |      |      |      |      |      |      |  Del |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|Colemk|Dvorak|Plover|      |
+ * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|Colemk|Dvorak|      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |Voice-|Voice+|Mus on|Musoff|MIDIon|MIDIof|      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -204,7 +302,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_ADJUST] = {
   {_______, RESET,   _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_DEL },
-  {_______, _______, _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  COLEMAK, DVORAK,  PLOVER,  _______},
+  {_______, _______, _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  COLEMAK, DVORAK,  _______,  _______},
   {_______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  _______, _______, _______, _______, _______},
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______}
 }
@@ -216,8 +314,6 @@ float tone_startup[][2]    = SONG(STARTUP_SOUND);
 float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
 float tone_dvorak[][2]     = SONG(DVORAK_SOUND);
 float tone_colemak[][2]    = SONG(COLEMAK_SOUND);
-float tone_plover[][2]     = SONG(PLOVER_SOUND);
-float tone_plover_gb[][2]  = SONG(PLOVER_GOODBYE_SOUND);
 float music_scale[][2]     = SONG(MUSIC_SCALE_SOUND);
 
 float tone_goodbye[][2] = SONG(GOODBYE_SOUND);
@@ -286,34 +382,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         #endif
       } else {
         unregister_code(KC_RSFT);
-      }
-      return false;
-      break;
-    case PLOVER:
-      if (record->event.pressed) {
-        #ifdef AUDIO_ENABLE
-          stop_all_notes();
-          PLAY_NOTE_ARRAY(tone_plover, false, 0);
-        #endif
-        layer_off(_RAISE);
-        layer_off(_LOWER);
-        layer_off(_ADJUST);
-        layer_on(_PLOVER);
-        if (!eeconfig_is_enabled()) {
-            eeconfig_init();
-        }
-        keymap_config.raw = eeconfig_read_keymap();
-        keymap_config.nkro = 1;
-        eeconfig_update_keymap(keymap_config.raw);
-      }
-      return false;
-      break;
-    case EXT_PLV:
-      if (record->event.pressed) {
-        #ifdef AUDIO_ENABLE
-          PLAY_NOTE_ARRAY(tone_plover_gb, false, 0);
-        #endif
-        layer_off(_PLOVER);
       }
       return false;
       break;
