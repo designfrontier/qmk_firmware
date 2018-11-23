@@ -1,5 +1,7 @@
 // This is the canonical layout file for the Quantum project. If you want to add another keyboard,
 // this is the style you want to emulate.
+#include QMK_KEYBOARD_H
+#include "muse.h"
 
 #include "planck.h"
 #include "action_layer.h"
@@ -17,8 +19,7 @@ extern keymap_config_t keymap_config;
 
 enum planck_layers {
   _QWERTY,
-  _COLEMAK,
-  _DVORAK,
+  _NORMAN,
   _LOWER,
   _RAISE,
   _ADJUST,
@@ -29,8 +30,7 @@ enum planck_layers {
 
 enum planck_keycodes {
   QWERTY = SAFE_RANGE,
-  COLEMAK,
-  DVORAK,
+  NORMAN,
   LOWER,
   RAISE,
   BACKLIT,
@@ -155,12 +155,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |      |      |      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_ARROWS] = {
-  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-  {_______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, _______, _______},
-  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______}
-},
+[_ARROWS] = LAYOUT_planck_grid(
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+),
 
 /* Ten Key
  * ,-----------------------------------------------------------------------------------.
@@ -174,12 +174,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 
-[_TENKEY] = {
-  { KC_DEL, _______, _______, _______, _______, _______, _______, _______,    KC_7,    KC_8,    KC_9, KC_MINS},
-  {KC_BSPC, _______, _______, _______, _______, _______, _______, _______,    KC_4,    KC_5,    KC_6, KC_ASTR},
-  {_______, _______, _______, _______, _______, _______, _______, _______,    KC_1,    KC_2,    KC_3, KC_PLUS},
-  {KC_TRNS, _______, _______, _______, LT(_EMOJI, KC_E), _______, _______, _______,    KC_0,    KC_0,  KC_DOT,  KC_ENT}
-},
+[_TENKEY] = LAYOUT_planck_grid(
+   KC_DEL, _______, _______, _______, _______, _______, _______, _______,    KC_7,    KC_8,    KC_9, KC_MINS,
+  KC_BSPC, _______, _______, _______, _______, _______, _______, _______,    KC_4,    KC_5,    KC_6, KC_ASTR,
+  _______, _______, _______, _______, _______, _______, _______, _______,    KC_1,    KC_2,    KC_3, KC_PLUS,
+  KC_TRNS, _______, _______, _______, _______, _______, _______, _______,    KC_0,    KC_0,  KC_DOT,  KC_ENT
+),
 
 /* Qwerty
  * ,-----------------------------------------------------------------------------------.
@@ -192,48 +192,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |TENKEY| Ctrl | Alt  | GUI  |Lower |    Space    |Raise | Left | Down |  Up  |Right |
  * `-----------------------------------------------------------------------------------'
  */
-[_QWERTY] = {
-  {KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC},
-  {KC_ESC,  LT(_ARROWS, KC_A),    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT},
-  {KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT },
-  {TG(_TENKEY), KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT}
-},
+[_QWERTY] = LAYOUT_planck_grid(
+  KC_TAB,  KC_Q,    KC_W,    LT(_EMOJI, KC_E),    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
+  KC_ESC,  LT(_ARROWS, KC_A),    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+  KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT ,
+  TG(_TENKEY), KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+),
 
-/* Colemak
+/* Norman
  * ,-----------------------------------------------------------------------------------.
- * | Tab  |   Q  |   W  |   F  |   P  |   G  |   J  |   L  |   U  |   Y  |   ;  | Bksp |
+ * | Tab  |   Q  |   W  |   D  |   F  |   K  |   J  |   U  |   R  |   L  |   ;  | Bksp |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | Esc  |   A  |   R  |   S  |   T  |   D  |   H  |   N  |   E  |   I  |   O  |  "   |
+ * | Esc  |   A  |   S  |   E  |   T  |   G  |   Y  |   N  |   I  |   O  |   H  |Enter |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | Shift|   Z  |   X  |   C  |   V  |   B  |   K  |   M  |   ,  |   .  |   /  |Enter |
+ * | Shift|   Z  |   X  |   C  |   V  |   B  |   P  |   M  |   ,  |   .  |   /  |Shift |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |TENKEY| Ctrl | Alt  | GUI  |Lower |    Space    |Raise | Left | Down |  Up  |Right |
+ * | Ctrl | Alt  | GUI  | Punc | Num  |    Space    | Func |Greek | GUI  |AltGr | Ctrl |
  * `-----------------------------------------------------------------------------------'
  */
-[_COLEMAK] = {
-  {KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_BSPC},
-  {KC_ESC,  KC_A,    KC_R,    KC_S,    KC_T,    KC_D,    KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT},
-  {KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT },
-  {TG(_TENKEY), KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT}
-},
 
-/* Dvorak
- * ,-----------------------------------------------------------------------------------.
- * | Tab  |   "  |   ,  |   .  |   P  |   Y  |   F  |   G  |   C  |   R  |   L  | Bksp |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | Esc  |   A  |   O  |   E  |   U  |   I  |   D  |   H  |   T  |   N  |   S  |  /   |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | Shift|   ;  |   Q  |   J  |   K  |   X  |   B  |   M  |   W  |   V  |   Z  |Enter |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |TENKEY| Ctrl | Alt  | GUI  |Lower |    Space    |Raise | Left | Down |  Up  |Right |
- * `-----------------------------------------------------------------------------------'
- */
-[_DVORAK] = {
-  {KC_TAB,  KC_QUOT, KC_COMM, KC_DOT,  KC_P,    KC_Y,    KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_BSPC},
-  {KC_ESC,  KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_SLSH},
-  {KC_LSFT, KC_SCLN, KC_Q,    KC_J,    KC_K,    KC_X,    KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_ENT },
-  {TG(_TENKEY), KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT}
-},
+[_NORMAN] = LAYOUT_planck_grid(
+  _______, KC_Q,    KC_W,    KC_D,    KC_F,    KC_K,    KC_J,    KC_U,    KC_R,    KC_L,    KC_QUOT, _______,
+  _______, KC_A,    KC_S,    KC_E,    KC_T,    KC_G,    KC_Y,    KC_N,    KC_I,    KC_O,    KC_H,    _______,
+  _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_P,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+),
 
 /* Lower
  * ,-----------------------------------------------------------------------------------.
@@ -246,12 +229,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |BACKLIT|      |      |      |      |             |      | Next | Vol- | Vol+ | Play |
  * `-----------------------------------------------------------------------------------'
  */
-[_LOWER] = {
-  {KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR,    KC_ASTR,    KC_LPRN, KC_RPRN, KC_BSPC},
-  {KC_DEL,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_UNDS,    KC_PLUS,    KC_LCBR, KC_RCBR, KC_PIPE},
-  {_______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  S(KC_NUHS), S(KC_NUBS), KC_HOME, KC_END,  _______},
-  {BACKLIT, _______, _______, _______, _______, _______, _______, _______,    KC_MNXT,    KC_VOLD, KC_VOLU, KC_MPLY}
-},
+[_LOWER] = LAYOUT_planck_grid(
+  KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR,    KC_ASTR,    KC_LPRN, KC_RPRN, KC_BSPC,
+  KC_DEL,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_UNDS,    KC_PLUS,    KC_LCBR, KC_RCBR, KC_PIPE,
+  _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  S(KC_NUHS), S(KC_NUBS), KC_HOME, KC_END,  _______,
+  BACKLIT, _______, _______, _______, _______, _______, _______, _______,    KC_MNXT,    KC_VOLD, KC_VOLU, KC_MPLY
+),
 
 /* Raise
  * ,-----------------------------------------------------------------------------------.
@@ -264,12 +247,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |      |      |      |      |      |             |      | Next | Vol- | Vol+ | Play |
  * `-----------------------------------------------------------------------------------'
  */
-[_RAISE] = {
-  {KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC},
-  {KC_DEL,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS},
-  {_______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_NUHS, KC_NUBS, KC_PGUP, KC_PGDN, _______},
-  {BACKLIT, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY}
-},
+[_RAISE] = LAYOUT_planck_grid(
+  KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
+  KC_DEL,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS,
+  _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_NUHS, KC_NUBS, KC_PGUP, KC_PGDN, _______,
+  BACKLIT, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY
+),
 
 /* Emoji
  * ,-----------------------------------------------------------------------------------.
@@ -282,38 +265,37 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_EMOJI] = {
-  {X(HART2), X(CRY2) , X(WEARY), X(EYERT),X(SMIRK),  X(TJOY), X(RECYC), X(UNAMU),X(MUSIC),X(OKHND),X(PENSV), X(PHEW)},
-  {X(THMUP), X(PRAY) , X(SMILE), X(SMIL2),X(FLUSH),  X(GRIN), X(HEART),   X(BYE), X(KISS),X(CELEB), X(COOL),X(NOEVS)},
-  {X(THMDN), X(SLEEP),  X(CLAP),   X(CRY),  X(VIC), X(BHART),   X(SUN), X(SMEYE), X(WINK), X(MOON),X(CONFU),X(NOEVH)},
-  {________,   X(POO),  X(EYES), X(HUNRD), _______, X(SKULL), X(HORNS), ________, X(HALO), X(FEAR),X(YUMMY),X(NOEVK)}
-},
+[_EMOJI] = LAYOUT_planck_grid(
+  X(HART2), X(CRY2) , X(WEARY), _______,X(SMIRK),  X(TJOY), X(RECYC), X(UNAMU),X(MUSIC),X(OKHND),X(PENSV), X(PHEW),
+  X(THMUP), X(PRAY) , X(SMILE), X(SMIL2),X(FLUSH),  X(GRIN), X(HEART),   X(BYE), X(KISS),X(CELEB), X(COOL),X(NOEVS),
+  X(THMDN), X(SLEEP),  X(CLAP),   X(CRY),  X(VIC), X(BHART),   X(SUN), X(SMEYE), X(WINK), X(MOON),X(CONFU),X(NOEVH),
+  X(TONGU),   X(POO),  X(EYES), X(HUNRD), X(EYERT), X(SKULL), X(HORNS), X(DISAP), X(HALO), X(FEAR),X(YUMMY),X(NOEVK)
+),
 
 /* Adjust (Lower + Raise)
  * ,-----------------------------------------------------------------------------------.
  * |      | Reset|      |      |      |      |      |      |      |      |      |  Del |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|Colemk|Dvorak|      |      |
+ * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|Norman|      |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |Voice-|Voice+|Mus on|Musoff|MIDIon|MIDIof|      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_ADJUST] = {
-  {_______, RESET,   _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_DEL },
-  {_______, _______, _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  COLEMAK, DVORAK,  _______,  _______},
-  {_______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  _______, _______, _______, _______, _______},
-  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______}
-}
+[_ADJUST] = LAYOUT_planck_grid(
+  _______, RESET,   _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_DEL ,
+  _______, _______, _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  NORMAN, _______,  _______,  _______,
+  _______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+)
 };
 
 #ifdef AUDIO_ENABLE
 
 float tone_startup[][2]    = SONG(STARTUP_SOUND);
 float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
-float tone_dvorak[][2]     = SONG(DVORAK_SOUND);
-float tone_colemak[][2]    = SONG(COLEMAK_SOUND);
+float tone_norman[][2]    = SONG(CLOSE_ENCOUNTERS_5_NOTE);
 float music_scale[][2]     = SONG(MUSIC_SCALE_SOUND);
 
 float tone_goodbye[][2] = SONG(GOODBYE_SOUND);
@@ -330,27 +312,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case QWERTY:
       if (record->event.pressed) {
         #ifdef AUDIO_ENABLE
-          PLAY_NOTE_ARRAY(tone_qwerty, false, 0);
+          PLAY_SONG(tone_qwerty);
         #endif
         persistent_default_layer_set(1UL<<_QWERTY);
       }
       return false;
       break;
-    case COLEMAK:
+    case NORMAN:
       if (record->event.pressed) {
         #ifdef AUDIO_ENABLE
-          PLAY_NOTE_ARRAY(tone_colemak, false, 0);
+          PLAY_SONG(tone_norman);
         #endif
-        persistent_default_layer_set(1UL<<_COLEMAK);
-      }
-      return false;
-      break;
-    case DVORAK:
-      if (record->event.pressed) {
-        #ifdef AUDIO_ENABLE
-          PLAY_NOTE_ARRAY(tone_dvorak, false, 0);
-        #endif
-        persistent_default_layer_set(1UL<<_DVORAK);
+        persistent_default_layer_set(1UL<<_NORMAN);
       }
       return false;
       break;
@@ -400,12 +373,12 @@ void matrix_init_user(void) {
 void startup_user()
 {
     _delay_ms(20); // gets rid of tick
-    PLAY_NOTE_ARRAY(tone_startup, false, 0);
+    PLAY_SONG(tone_startup);
 }
 
 void shutdown_user()
 {
-    PLAY_NOTE_ARRAY(tone_goodbye, false, 0);
+    PLAY_SONG(tone_goodbye);
     _delay_ms(150);
     stop_all_notes();
 }
@@ -417,7 +390,7 @@ void music_on_user(void)
 
 void music_scale_user(void)
 {
-    PLAY_NOTE_ARRAY(music_scale, false, 0);
+    PLAY_SONG(music_scale);
 }
 
 #endif
